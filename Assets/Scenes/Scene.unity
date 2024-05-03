@@ -6345,6 +6345,8 @@ MonoBehaviour:
   spawn_center: {x: 50, y: 0, z: 50}
   max_enemy_count: 10
   min_enemy_count: 2
+  inter_enemy_spawn_dist: 5
+  enemy_to_player_spawn_dist: 10
 --- !u!4 &1617565676
 Transform:
   m_ObjectHideFlags: 0
