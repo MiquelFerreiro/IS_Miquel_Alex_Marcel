@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -161,5 +162,10 @@ public class EnemySpawner : MonoBehaviour
     {
         //TODO: use cool random distribution
         return Random.value * Random.value * 6f + 2f; 
+    }
+
+    public static void remove_enemy(GameObject enemy)
+    {
+        enemy_list.Remove(enemy); 
     }
 }

@@ -39,7 +39,7 @@ public class PluginConnector : MonoBehaviour
 
     //attributes for non-tracking input
     private int playerSelected = 1;
-    private int trackingDisabledPlayerSpeed = 5;
+    private int trackingDisabledPlayerSpeed = 20;
 
     //attributes for tracking calibration
     [Header("Calibration")]
@@ -487,6 +487,14 @@ public class PluginConnector : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             players[playerSelected - 1].transform.Translate(Vector3.right * Time.deltaTime * trackingDisabledPlayerSpeed);
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            players[playerSelected - 1].transform.Translate(Vector3.up * Time.deltaTime * trackingDisabledPlayerSpeed);
+        }
+        if (Input.GetKey(KeyCode.E))
+        {
+            players[playerSelected - 1].transform.Translate(Vector3.down * Time.deltaTime * trackingDisabledPlayerSpeed);
         }
     }
 
