@@ -27,7 +27,6 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("CALLED START"); 
         float p = Random.value;
 
         if(p < 0.333333f)
@@ -71,7 +70,7 @@ public class EnemyController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        Debug.Log("OnTriggerEnter"); 
+        //Debug.Log("OnTriggerEnter"); 
         if (!other.CompareTag("Player")) return;
 
 
