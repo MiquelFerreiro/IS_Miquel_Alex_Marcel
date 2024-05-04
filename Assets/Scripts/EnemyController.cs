@@ -111,7 +111,6 @@ public class EnemyController : MonoBehaviour
         }
 
 
-        Debug.Log(attack_height); 
 
         if(attack_height_enum == height)
         {
