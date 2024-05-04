@@ -22,9 +22,12 @@ public class EnemyController : MonoBehaviour
 
     public Height height; 
     private float base_size;
-    public GameObject visual; 
+    public GameObject visual;
 
-    // Start is called before the first frame update
+    private const float DEATH_TIMER_MAX = 1f; //The time it takes for an enemy to die
+    private const float DEATH_TIMER_REPLENISMENT_RATE = 0.5f; // An enemy almost died recovers in 1/DEATH_TIMER_REPLENISMENT_RATE seconds
+    private float death_timer = DEATH_TIMER_MAX; //time in seconds
+
     void Start()
     {
         float p = Random.value;
@@ -61,24 +64,40 @@ public class EnemyController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if(death_timer <= 0f) {
+            EnemySpawner.remove_enemy(gameObject);
+            Destroy(gameObject); 
+        }
         
+        death_timer = Mathf.Clamp(death_timer + Time.deltaTime * DEATH_TIMER_REPLENISMENT_RATE, 0f, DEATH_TIMER_MAX); 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
+        //https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerStay.html
+        //OnTriggerStay is called once per physics update for every Collider other that is touching the trigger.
 
-        //Debug.Log("OnTriggerEnter"); 
         if (!other.CompareTag("Player")) return;
 
+        death_timer += -Time.deltaTime * (1 + DEATH_TIMER_REPLENISMENT_RATE); 
+
+        //Note: Happy secundary effect: if more than 1 player is touching the enemy, it dies way faster. 
+
+    }
+
+    /*
+    private void OnTriggerEnter(Collider other)
+    {
+        //Debug.Log("OnTriggerEnter"); 
+        if (!other.CompareTag("Player")) return;
 
         EnemySpawner.remove_enemy(gameObject); 
 
         Destroy(gameObject);
 
+    }*/
 
 
-    }
 }
