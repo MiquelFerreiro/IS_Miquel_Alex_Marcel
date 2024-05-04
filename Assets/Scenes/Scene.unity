@@ -2014,7 +2014,7 @@ GameObject:
   - component: {fileID: 483883241}
   - component: {fileID: 483883240}
   - component: {fileID: 483883239}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player7
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3101,7 +3101,7 @@ GameObject:
   - component: {fileID: 763629982}
   - component: {fileID: 763629981}
   - component: {fileID: 763629980}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player5
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3649,7 +3649,7 @@ GameObject:
   - component: {fileID: 1151668551}
   - component: {fileID: 1151668550}
   - component: {fileID: 1151668549}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player8
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3974,7 +3974,7 @@ GameObject:
   - component: {fileID: 1264190557}
   - component: {fileID: 1264190556}
   - component: {fileID: 1264190560}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player4
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4486,7 +4486,7 @@ GameObject:
   - component: {fileID: 1440896349}
   - component: {fileID: 1440896348}
   - component: {fileID: 1440896352}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5001,7 +5001,7 @@ GameObject:
   - component: {fileID: 1471923277}
   - component: {fileID: 1471923276}
   - component: {fileID: 1471923280}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player2
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5380,7 +5380,7 @@ GameObject:
   - component: {fileID: 1554760529}
   - component: {fileID: 1554760528}
   - component: {fileID: 1554760527}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player6
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6594,7 +6594,7 @@ GameObject:
   - component: {fileID: 1865111051}
   - component: {fileID: 1865111050}
   - component: {fileID: 1865111054}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player3
   m_TagString: Player
   m_Icon: {fileID: 0}
