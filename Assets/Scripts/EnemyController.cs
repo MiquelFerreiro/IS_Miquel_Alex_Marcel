@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public const float IRL2UNITY = 100f / 6f; //conversion factor for distances between unity and irl. 
-    public const float UNITY2IRL = 6f / 100f; //conversion factor for distances between unity and irl. 
+    //public const float IRL2UNITY = 100f / 6f; //conversion factor for distances between unity and irl. 
+    //public const float UNITY2IRL = 6f / 100f; //conversion factor for distances between unity and irl. 
+    public const float IRL2UNITY = 1f; //conversion factor for distances between unity and irl. 
+    public const float UNITY2IRL = 1f; //conversion factor for distances between unity and irl. 
     //Por abajo de cadera es abajo; por encima de hombros es arriba
     public enum Height { 
         Low, 
