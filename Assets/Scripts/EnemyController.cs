@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     public const float IRL2UNITY = 1f; //conversion factor for distances between unity and irl. 
     public const float UNITY2IRL = 1f; //conversion factor for distances between unity and irl. 
     //Por abajo de cadera es abajo; por encima de hombros es arriba
+
     public enum Height { 
         Low, 
         /* red: infierno
@@ -32,12 +33,12 @@ public class EnemyController : MonoBehaviour
     private float base_size;
     public GameObject visual;
 
-    private const float DEATH_TIMER_MAX = 1f; //The time it takes for an enemy to die. In seconds, oviously
+    private const float DEATH_TIMER_MAX = 0.6f; //The time it takes for an enemy to die. In seconds, oviously
     private const float DEATH_TIMER_REPLENISMENT_RATE = 0.5f; // An enemy almost died recovers in 1/DEATH_TIMER_REPLENISMENT_RATE seconds
     private float death_timer = DEATH_TIMER_MAX; //time in seconds
 
-    private const float WARNING_TIMER_MAX = 4f;
-    private float warning_timer = WARNING_TIMER_MAX; 
+    private const float WARNING_TIMER_MAX = 2f;
+    private float warning_timer = WARNING_TIMER_MAX;
 
     void Start()
     {
@@ -77,7 +78,8 @@ public class EnemyController : MonoBehaviour
     {
         if(death_timer <= 0f) {
             EnemySpawner.remove_enemy(gameObject);
-            Destroy(gameObject); 
+            Destroy(gameObject);
+
         }
         
         death_timer = Mathf.Clamp(death_timer + Time.deltaTime * DEATH_TIMER_REPLENISMENT_RATE, 0f, DEATH_TIMER_MAX); 
@@ -85,6 +87,9 @@ public class EnemyController : MonoBehaviour
         if(warning_timer <= 0f) {
             Debug.Log("NOT THE RIGHT HEIGHT!! ");
             warning_timer = WARNING_TIMER_MAX;
+
+            SoundController sound = GameObject.Find("SoundController").GetComponent<SoundController>();
+            sound.PlayWrongHeight();
         }
     
     }

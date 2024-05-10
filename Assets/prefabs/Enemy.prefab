@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   height: 0
   visual: {fileID: 0}
+  SoundController: {fileID: 4011231312783341655, guid: ba03ac092176cfa4a812f4b3725dcdb7, type: 3}
 --- !u!136 &387317234710939907
 CapsuleCollider:
   m_ObjectHideFlags: 0

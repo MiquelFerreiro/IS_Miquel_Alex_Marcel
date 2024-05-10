@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f61a46470dbdb5f449e84747e2fd7f2b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - BaseMusic: {fileID: 8300000, guid: ad53041155432bb4593b98e570eea2f4, type: 3}
+  - BalloonSpawn: {fileID: 8300000, guid: 51b4d4485b91abb47995811357b67356, type: 3}
+  - BalloonPop: {fileID: 8300000, guid: 00c4880aae7246543a9f8a1df8b1d45b, type: 3}
+  - TakeDamage: {fileID: 8300000, guid: 4a6a331e6c6e96a4aa39af1a135a27e4, type: 3}
+  - WrongHeight: {fileID: 8300000, guid: c89bb73d2839e8c4c86e7b9943fc2458, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
