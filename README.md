@@ -1,3 +1,4 @@
+INITIAL PROJECT STRUCTURE
 We created a scenario consisting of a moving sky background, across which certain balloons will appear. 
 We added music and sound effects for the balloons. Initially, we selected a simple hand as a pointer for the player, but we later found a better asset. 
 The numbers represent the current height of each player. Players need to reach a certain height in order to catch or pop the balloons, depending on their color.
