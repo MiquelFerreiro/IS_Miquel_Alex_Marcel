@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class FollowerBhvr : MonoBehaviour
 {
-    [SerializeField] private GameObject idol;
+    [SerializeField] private GameObject asset;
 
+    private void Start()
+    {
+        Instantiate(asset);
+    }
     void Update()
     {
-        transform.position = new Vector3(idol.transform.position.x, 0f, idol.transform.position.z);
+        asset.transform.position = transform.position;
     }
 }
