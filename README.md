@@ -5,3 +5,4 @@ The numbers represent the current height of each player. Players need to reach a
 Here are the references for the background video and hand pointer:
 Hands: https://assetstore.unity.com/packages/3d/characters/stylized-simple-hands-221297
 Background Video: https://youtu.be/pe__aGppVBg?si=-QUzKbqTlZArTS9F
+(Tracking mode is now disabled)
