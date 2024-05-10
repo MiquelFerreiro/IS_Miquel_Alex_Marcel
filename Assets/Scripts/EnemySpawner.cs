@@ -154,7 +154,10 @@ public class EnemySpawner : MonoBehaviour
         new_enemy.transform.localScale = Vector3.one * ((Random.value * Random.value - 0.5f) * 0.3f + 1f); 
         // add tiny change in scale
 
-        enemy_list.Add(new_enemy); 
+        enemy_list.Add(new_enemy);
+
+        SoundController sound = GameObject.Find("SoundController").GetComponent<SoundController>();
+        sound.PlaySpawnSound();
 
     }
 
@@ -166,6 +169,9 @@ public class EnemySpawner : MonoBehaviour
 
     public static void remove_enemy(GameObject enemy)
     {
-        enemy_list.Remove(enemy); 
+        enemy_list.Remove(enemy);
+
+        SoundController sound = GameObject.Find("SoundController").GetComponent<SoundController>();
+        sound.PlayPopSound();
     }
 }
