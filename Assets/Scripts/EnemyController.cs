@@ -25,6 +25,8 @@ public class EnemyController : MonoBehaviour
          * */
     };
 
+    public static GameObject OBJECTIVE; 
+
     public const float LOW_MEDIUM_BOUNDARY = 0.85f; //Boundary between low and medium height
     public const float MEDIUM_HIGH_BOUNDARY = 1.4875f; //Boundary between medium and high height
 
@@ -40,8 +42,13 @@ public class EnemyController : MonoBehaviour
     private const float WARNING_TIMER_MAX = 2f;
     private float warning_timer = WARNING_TIMER_MAX;
 
+    private Rigidbody rigid_body; 
+
     void Start()
     {
+
+        rigid_body = GetComponent<Rigidbody>(); 
+
         float p = Random.value;
 
         if(p < 0.333333f) {
@@ -80,6 +87,8 @@ public class EnemyController : MonoBehaviour
             EnemyController.UNITY2IRL = 6f / 100f;
         }
 
+        rigid_body.velocity = new Vector3(-transform.position.z + 50, transform.position.y, transform.position.x - 50) * 1/10; 
+
     }
 
     void Update()
@@ -96,10 +105,14 @@ public class EnemyController : MonoBehaviour
             Debug.Log("NOT THE RIGHT HEIGHT!! ");
             warning_timer = WARNING_TIMER_MAX;
 
-            SoundController sound = GameObject.Find("SoundController").GetComponent<SoundController>();
-            sound.PlayWrongHeight();
+            EnemySpawner.SOUND_CONTROLLER.PlayWrongHeight();
         }
-    
+
+        Vector3 force_dir = OBJECTIVE.transform.position - transform.position; 
+        //force_dir = force_dir.normalized;
+
+        rigid_body.AddForce(30 * force_dir.normalized / force_dir.magnitude);
+        //rigid_body.velocity = force_dir*5;
     }
 
     private void OnTriggerStay(Collider other)
@@ -131,8 +144,7 @@ public class EnemyController : MonoBehaviour
         {
             death_timer += -Time.deltaTime * (1 + DEATH_TIMER_REPLENISMENT_RATE); 
 
-        } else
-        {
+        } else {
             //the user is atacking at the wrong spot
             warning_timer += -Time.deltaTime; 
         }
@@ -142,17 +154,7 @@ public class EnemyController : MonoBehaviour
 
     }
 
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        //Debug.Log("OnTriggerEnter"); 
-        if (!other.CompareTag("Player")) return;
 
-        EnemySpawner.remove_enemy(gameObject); 
-
-        Destroy(gameObject);
-
-    }*/
 
 
 }

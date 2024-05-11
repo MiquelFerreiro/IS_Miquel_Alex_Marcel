@@ -25,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
     private Transform player_1; 
     private Transform player_2;
 
-    private SoundController sound_controller; 
+    public static SoundController SOUND_CONTROLLER; 
 
 
     void Start()
@@ -51,7 +51,8 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        sound_controller = GameObject.Find("SoundController").GetComponent<SoundController>();
+        SOUND_CONTROLLER = GameObject.Find("SoundController").GetComponent<SoundController>();
+        EnemyController.OBJECTIVE = GameObject.Find("Objective");
 
 
     }
@@ -167,7 +168,7 @@ public class EnemySpawner : MonoBehaviour
 
         enemy_list.Add(new_enemy);
 
-        sound_controller.PlaySpawnSound();
+        SOUND_CONTROLLER.PlaySpawnSound();
 
     }
 
