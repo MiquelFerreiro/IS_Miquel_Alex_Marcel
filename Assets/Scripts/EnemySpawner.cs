@@ -9,8 +9,9 @@ public class EnemySpawner : MonoBehaviour
 {
 
     public GameObject enemy_prefab;
-    [SerializeField] private float min_spawn_radius = 0f; 
-    [SerializeField] private float max_spawn_radius = 10f; 
+    //[SerializeField] private float min_spawn_radius = 0f; 
+    //[SerializeField] private float max_spawn_radius = 10f;
+    [SerializeField] private float spawn_radius = 30f; 
     [SerializeField] private Vector3 spawn_center = Vector3.zero;
     public static List<GameObject> enemy_list = new List<GameObject>();
     [SerializeField] private uint max_enemy_count = 10;
@@ -23,6 +24,8 @@ public class EnemySpawner : MonoBehaviour
     private float time_for_enemy_spawn = 0f;
     private Transform player_1; 
     private Transform player_2;
+
+    private SoundController sound_controller; 
 
 
     void Start()
@@ -47,6 +50,9 @@ public class EnemySpawner : MonoBehaviour
                 if (player_1 != null) break;
             }
         }
+
+        sound_controller = GameObject.Find("SoundController").GetComponent<SoundController>();
+
 
     }
 
@@ -79,44 +85,54 @@ public class EnemySpawner : MonoBehaviour
 
     void spawn_enemy()
     {
-        float rato_radius = min_spawn_radius / max_spawn_radius;
-        float x;
-        float y;
+        Vector3 coordinate;
+        Vector3 displacement; //auxiliar variable
+
         do
         {
-            /*
-             *  Compute a random point in [-1, 1] x [-1, 1] and 
-             *  use rejection method to select appropiate points 
-             *  inside the donut. 
-            */
+            //generate the points on the perimeter of the square
+            //genterate the ponits in the are [-1, 1] x [-1, 1]
 
-            x = Random.value * 2 - 1; 
-            y = Random.value * 2 - 1;
-            float magnitude = x * x + y * y; 
+            float rnd = Random.value * 2 - 1; 
 
-            if (1 < magnitude)
+            switch ((int)(Random.value * 4))
             {
-                //outside the outer circle, reject. 
-                continue; 
+                case 0: //top of square
+                    coordinate = new Vector3(rnd, 0, 1);
+                    //x = rnd;
+                    //y = 1; 
+                    break;
+                case 1: //bottom of square
+                    coordinate = new Vector3(rnd, 0, -1);
+                    //x = rnd;
+                    //y = -1;
+                    break;
+                case 2: //left of square
+                    coordinate = new Vector3(-1, 0, rnd);
+                    //x = -1;
+                    //y = rnd;
+                    break;
+                default: // right of square
+                    coordinate = new Vector3(1, 0, rnd);
+                    //x = 1;
+                    //y = rnd;
+                    break;
             }
 
-            if(magnitude < rato_radius)
-            {
-                //inside the inner circle, reject
-                continue; 
-            }
 
-            Vector3 coordinate = new Vector3(x * max_spawn_radius, 0, y * max_spawn_radius); // in world space
-            Vector3 displacement; //auxiliar variable
+            //remap position from [-1, 1] x [-1, 1] to the final square
+            coordinate = coordinate * spawn_radius + spawn_center; // in world space
+            //^candidate of spawn position
+
+            bool reject = false;
             int enemy_count = enemy_list.Count;
-            bool reject = false; 
             for (int i = 0; i < enemy_count; i++)
             {
 
-                displacement = enemy_list[i].transform.position - coordinate; 
-                if(displacement.sqrMagnitude <= inter_enemy_spawn_dist * inter_enemy_spawn_dist)
+                displacement = enemy_list[i].transform.position - coordinate;
+                if (displacement.sqrMagnitude <= inter_enemy_spawn_dist * inter_enemy_spawn_dist)
                 {
-                    reject = true; 
+                    reject = true; // too near of anothe balloon
                     break;
                 }
 
@@ -124,11 +140,11 @@ public class EnemySpawner : MonoBehaviour
 
             if (reject) continue;
 
-            displacement = player_1.position - coordinate; 
-            if(displacement.sqrMagnitude < player_to_enemy_spawn_dist * player_to_enemy_spawn_dist)
+            displacement = player_1.position - coordinate;
+            if (displacement.sqrMagnitude < player_to_enemy_spawn_dist * player_to_enemy_spawn_dist)
             {
                 // too near to player 1, reject
-                continue; 
+                continue;
             }
 
             displacement = player_2.position - coordinate;
@@ -139,25 +155,19 @@ public class EnemySpawner : MonoBehaviour
             }
 
             //points are valid, accept
-            break; 
+            break;
 
 
         } while (true);
 
-        //remap position from [-1, 1] x [-1, 1] to [-outer_radius, outer_radius] x [-outer_radius, outer_radius]
-        x = x * max_spawn_radius; 
-        y = y * max_spawn_radius; 
+        GameObject new_enemy = Instantiate(enemy_prefab, coordinate, Quaternion.identity);
 
-        Vector3 pos = spawn_center + new Vector3(x, 0, y); //I lied. y was z all the time. 
-        GameObject new_enemy = Instantiate(enemy_prefab, pos, Quaternion.identity); 
-
-        new_enemy.transform.localScale = Vector3.one * ((Random.value * Random.value - 0.5f) * 0.3f + 1f); 
+        new_enemy.transform.localScale = Vector3.one * ((Random.value * Random.value - 0.5f) * 0.3f + 1f);
         // add tiny change in scale
 
         enemy_list.Add(new_enemy);
 
-        SoundController sound = GameObject.Find("SoundController").GetComponent<SoundController>();
-        sound.PlaySpawnSound();
+        sound_controller.PlaySpawnSound();
 
     }
 
@@ -175,3 +185,92 @@ public class EnemySpawner : MonoBehaviour
         sound.PlayPopSound();
     }
 }
+
+
+
+/*
+void spawn_enemy()
+{
+    float rato_radius = min_spawn_radius / max_spawn_radius;
+    float x;
+    float y;
+    do
+    {
+
+        // *  Compute a random point in [-1, 1] x [-1, 1] and 
+        // *  use rejection method to select appropiate points 
+        // *  inside the donut. 
+
+
+        x = Random.value * 2 - 1; 
+        y = Random.value * 2 - 1;
+        float magnitude = x * x + y * y; 
+
+        if (1 < magnitude)
+        {
+            //outside the outer circle, reject. 
+            continue; 
+        }
+
+        if(magnitude < rato_radius)
+        {
+            //inside the inner circle, reject
+            continue; 
+        }
+
+        Vector3 coordinate = new Vector3(x * max_spawn_radius, 0, y * max_spawn_radius); // in world space
+        Vector3 displacement; //auxiliar variable
+        int enemy_count = enemy_list.Count;
+        bool reject = false; 
+        for (int i = 0; i < enemy_count; i++)
+        {
+
+            displacement = enemy_list[i].transform.position - coordinate; 
+            if(displacement.sqrMagnitude <= inter_enemy_spawn_dist * inter_enemy_spawn_dist)
+            {
+                reject = true; 
+                break;
+            }
+
+        }
+
+        if (reject) continue;
+
+        displacement = player_1.position - coordinate; 
+        if(displacement.sqrMagnitude < player_to_enemy_spawn_dist * player_to_enemy_spawn_dist)
+        {
+            // too near to player 1, reject
+            continue; 
+        }
+
+        displacement = player_2.position - coordinate;
+        if (displacement.sqrMagnitude < player_to_enemy_spawn_dist * player_to_enemy_spawn_dist)
+        {
+            // too near to player 2, reject
+            continue;
+        }
+
+        //points are valid, accept
+        break; 
+
+
+    } while (true);
+
+    //remap position from [-1, 1] x [-1, 1] to [-outer_radius, outer_radius] x [-outer_radius, outer_radius]
+    x = x * max_spawn_radius; 
+    y = y * max_spawn_radius; 
+
+    Vector3 pos = spawn_center + new Vector3(x, 0, y); //I lied. y was z all the time. 
+    GameObject new_enemy = Instantiate(enemy_prefab, pos, Quaternion.identity); 
+
+    new_enemy.transform.localScale = Vector3.one * ((Random.value * Random.value - 0.5f) * 0.3f + 1f); 
+    // add tiny change in scale
+
+    enemy_list.Add(new_enemy);
+
+    SoundController sound = GameObject.Find("SoundController").GetComponent<SoundController>();
+    sound.PlaySpawnSound();
+
+}
+*/
+
