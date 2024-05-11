@@ -627,6 +627,13 @@ public class PluginConnector : MonoBehaviour
             Debug.Log(column1.y.ToString() + " " + column2.y.ToString());
         }
     }
+
+
+    public bool get_is_tracking_enabled()
+    { //added getter
+        return enableTracking;
+    }
+
 }
 
 public class Calibration

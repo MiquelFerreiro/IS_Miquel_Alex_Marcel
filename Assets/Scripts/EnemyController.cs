@@ -6,8 +6,8 @@ public class EnemyController : MonoBehaviour
 {
     //public const float IRL2UNITY = 100f / 6f; //conversion factor for distances between unity and irl. 
     //public const float UNITY2IRL = 6f / 100f; //conversion factor for distances between unity and irl. 
-    public const float IRL2UNITY = 1f; //conversion factor for distances between unity and irl. 
-    public const float UNITY2IRL = 1f; //conversion factor for distances between unity and irl. 
+    public static float IRL2UNITY = 1f; //conversion factor for distances between unity and irl. 
+    public static float UNITY2IRL = 1f; //conversion factor for distances between unity and irl. 
     //Por abajo de cadera es abajo; por encima de hombros es arriba
 
     public enum Height { 
@@ -71,6 +71,14 @@ public class EnemyController : MonoBehaviour
         visual.transform.parent = gameObject.transform;
         visual.transform.localPosition = Vector3.zero; 
         visual.transform.localRotation = Quaternion.identity;
+
+
+        if(!GameObject.Find("PluginController").GetComponent<PluginConnector>().get_is_tracking_enabled())
+        {
+            //Poner factores de conversión si se controla an local
+            EnemyController.IRL2UNITY = 100f / 6f; 
+            EnemyController.UNITY2IRL = 6f / 100f;
+        }
 
     }
 
