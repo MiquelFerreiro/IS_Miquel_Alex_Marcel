@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    //public const float IRL2UNITY = 100f / 6f; //conversion factor for distances between unity and irl. 
-    //public const float UNITY2IRL = 6f / 100f; //conversion factor for distances between unity and irl. 
     public static float IRL2UNITY = 1f; //conversion factor for distances between unity and irl. 
     public static float UNITY2IRL = 1f; //conversion factor for distances between unity and irl. 
+    
     //Por abajo de cadera es abajo; por encima de hombros es arriba
-
     public enum Height { 
         Low, 
         /* red: infierno
@@ -25,29 +23,55 @@ public class EnemyController : MonoBehaviour
          * */
     };
 
+    public enum Type
+    {
+        Simple, //nada especial
+        Double, //tarda el doble en matarse
+        Leaking, //recive impulsos aleatorios
+    }
     public static GameObject OBJECTIVE; 
 
     public const float LOW_MEDIUM_BOUNDARY = 0.85f; //Boundary between low and medium height
     public const float MEDIUM_HIGH_BOUNDARY = 1.4875f; //Boundary between medium and high height
+    public const float SPECIAL_BALOON_CHANCE = 0.2f; //Chance to get a special baloon instead of a regular one
 
 
     public Height height; 
-    private float base_size;
+    public Type type;
+    //private float base_size;
     public GameObject visual;
 
     private const float DEATH_TIMER_MAX = 0.6f; //The time it takes for an enemy to die. In seconds, oviously
-    private const float DEATH_TIMER_REPLENISMENT_RATE = 0.5f; // An enemy almost died recovers in 1/DEATH_TIMER_REPLENISMENT_RATE seconds
+    private const float DEATH_TIMER_REPLENISMENT_RATE = 0.3f; // An enemy almost died recovers in 1/DEATH_TIMER_REPLENISMENT_RATE seconds
     private float death_timer = DEATH_TIMER_MAX; //time in seconds
 
     private const float WARNING_TIMER_MAX = 2f;
     private float warning_timer = WARNING_TIMER_MAX;
 
-    private Rigidbody rigid_body; 
+    private Rigidbody rigid_body;
+
+
+    /// <summary>
+    /// ////////////////////  SPECIAL BALOON STUFF
+    /// </summary>
+    //NOTE: the prefix "SP_<type>_" means that this is a variable used only when the ballon is special and of type <type>
+
+    //special variable that can serve multiple pruposes depending the special type of the baloon
+    private float special_auxiliar = 0f; 
+    // An enemy almost died recovers in 1/DEATH_TIMER_REPLENISMENT_RATE seconds
+    private const float SP_DOUBLE_DEATH_TIMER_REPLENISMENT_RATE = 1.1f; //greater than 1
+
+    /// <summary>
+    /// ////////////////////  SPECIAL BALOON STUFF
+    /// </summary>
 
     void Start()
     {
 
-        rigid_body = GetComponent<Rigidbody>(); 
+        rigid_body = GetComponent<Rigidbody>();
+
+        rigid_body.mass = Mathf.Clamp(Utils.GetNumberNormal() * 0.5f + 1, 0.01f, 100f);
+        rigid_body.velocity = new Vector3(-transform.position.z + 50, transform.position.y, transform.position.x - 50) * 1 / 10;
 
         float p = Random.value;
 
@@ -79,15 +103,32 @@ public class EnemyController : MonoBehaviour
         visual.transform.localPosition = Vector3.zero; 
         visual.transform.localRotation = Quaternion.identity;
 
+        //if (false) // testing
+        if (SPECIAL_BALOON_CHANCE < Random.value)
+        {
+            type = Type.Simple;
+        } else
+        {
+            p = Random.value;
+            if(p <= 0.5f)
+            {
+                type = Type.Double; 
+            } else
+            {
+                type = Type.Leaking;
+                special_auxiliar = (1 - Random.value * Random.value) * 2f + 1.5f; 
 
-        if(!GameObject.Find("PluginController").GetComponent<PluginConnector>().get_is_tracking_enabled())
+            }//add more types here
+
+        }
+
+        if (!GameObject.Find("PluginController").GetComponent<PluginConnector>().get_is_tracking_enabled())
         {
             //Poner factores de conversión si se controla an local
             EnemyController.IRL2UNITY = 100f / 6f; 
             EnemyController.UNITY2IRL = 6f / 100f;
         }
 
-        rigid_body.velocity = new Vector3(-transform.position.z + 50, transform.position.y, transform.position.x - 50) * 1/10; 
 
     }
 
@@ -98,8 +139,13 @@ public class EnemyController : MonoBehaviour
             Destroy(gameObject);
 
         }
-        
-        death_timer = Mathf.Clamp(death_timer + Time.deltaTime * DEATH_TIMER_REPLENISMENT_RATE, 0f, DEATH_TIMER_MAX); 
+        if (type == Type.Double)
+        {
+            death_timer = Mathf.Clamp(death_timer + Time.deltaTime * SP_DOUBLE_DEATH_TIMER_REPLENISMENT_RATE, 0f, DEATH_TIMER_MAX);
+        } else
+        {
+            death_timer = Mathf.Clamp(death_timer + Time.deltaTime * DEATH_TIMER_REPLENISMENT_RATE, 0f, DEATH_TIMER_MAX); 
+        }
     
         if(warning_timer <= 0f) {
             Debug.Log("NOT THE RIGHT HEIGHT!! ");
@@ -108,11 +154,71 @@ public class EnemyController : MonoBehaviour
             EnemySpawner.SOUND_CONTROLLER.PlayWrongHeight();
         }
 
-        Vector3 force_dir = OBJECTIVE.transform.position - transform.position; 
-        //force_dir = force_dir.normalized;
+        if(true) //this if will get optimized out
+        {
 
-        rigid_body.AddForce(30 * force_dir.normalized / force_dir.magnitude);
-        //rigid_body.velocity = force_dir*5;
+            Vector3 force_dir = OBJECTIVE.transform.position - transform.position;
+            //force_dir = force_dir.normalized;
+
+            rigid_body.AddForce(30 * force_dir.normalized / force_dir.magnitude);
+            //rigid_body.velocity = force_dir*5;
+        } else
+        {
+
+            //Lines limits considered: 
+            //x = 0
+            //y = 0
+            //x - 100 = 0
+            //y - 100 = 0
+            //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
+
+            //float num = transform.position; 
+            float den = 0;
+            float distance_to_limit = float.PositiveInfinity; 
+
+            //TODO: aply force from exterior
+
+        }
+
+        if(type != Type.Simple)
+        {
+            handle_baloon_behaviour(); 
+        }
+
+    }
+
+
+    void handle_baloon_behaviour()
+    {
+
+        transform.localScale = Vector3.one * (1f + 0.2f * Mathf.Sin(Time.realtimeSinceStartup * 4f));
+        //TODO: ^remove this. Testing only, to easly detect special baloons
+
+        switch (type)
+        {
+            case Type.Simple: 
+                //UNREACHABLE
+                break;
+            case Type.Double:
+                break;
+            case Type.Leaking:
+                special_auxiliar += -Time.deltaTime;
+                if (special_auxiliar <= 0f)
+                {
+                    special_auxiliar = (1 - Random.value * Random.value) * 2f + 1.5f;
+                    float theta = Random.value * 2 * Mathf.PI;
+                    Vector3 dir = new Vector3(Mathf.Cos(theta), 0f, Mathf.Sin(theta));
+                    float impulse_strength = Utils.GetNumberNormal() * 2f + 5f;
+
+                    rigid_body.AddForce(impulse_strength * dir, ForceMode.Impulse);
+                }
+                break;
+            default:
+                Debug.LogError("Switch statement is not exhaustive. "); //no quitar
+                break;
+
+        }
+
     }
 
     private void OnTriggerStay(Collider other)
@@ -121,6 +227,12 @@ public class EnemyController : MonoBehaviour
         //OnTriggerStay is called once per physics update for every Collider other that is touching the trigger.
 
         if (!other.CompareTag("Player")) return;
+
+        if(type != Type.Simple)
+        {
+            death_timer += -Time.deltaTime;
+            return; 
+        }
 
         float attack_height = other.transform.position.y * UNITY2IRL;
         Height attack_height_enum; 
@@ -142,7 +254,7 @@ public class EnemyController : MonoBehaviour
 
         if(attack_height_enum == height)
         {
-            death_timer += -Time.deltaTime * (1 + DEATH_TIMER_REPLENISMENT_RATE); 
+            death_timer += -Time.deltaTime; 
 
         } else {
             //the user is atacking at the wrong spot
@@ -154,6 +266,15 @@ public class EnemyController : MonoBehaviour
 
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Finish"))
+        {
+            EnemySpawner.remove_enemy(gameObject);
+            Destroy(gameObject);
+        }
+
+    }
 
 
 

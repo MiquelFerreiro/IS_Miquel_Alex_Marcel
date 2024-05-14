@@ -175,7 +175,8 @@ public class EnemySpawner : MonoBehaviour
     float time_for_next_spawn()
     {
         //TODO: use cool random distribution
-        return Random.value * Random.value * 6f + 2f; 
+        return Utils.GetNumberNormal() * 2f + 3f; 
+        //return Random.value * Random.value * 6f + 2f; 
     }
 
     public static void remove_enemy(GameObject enemy)

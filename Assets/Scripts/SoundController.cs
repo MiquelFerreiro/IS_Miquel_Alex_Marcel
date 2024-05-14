@@ -35,7 +35,7 @@ public class SoundController : MonoBehaviour
     }
     public void PlayWrongHeight()
     {
-        audioSource.PlayOneShot(WrongHeight, 1f);
+        audioSource.PlayOneShot(WrongHeight, 2f);
     }
     
 }
