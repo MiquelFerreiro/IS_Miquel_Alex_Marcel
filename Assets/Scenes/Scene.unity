@@ -1467,15 +1467,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5969955239984586251, guid: 250145e9ac4074b7bacc130ec1d651df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5969955239984586251, guid: 250145e9ac4074b7bacc130ec1d651df, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5969955239984586251, guid: 250145e9ac4074b7bacc130ec1d651df, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5969955239984586251, guid: 250145e9ac4074b7bacc130ec1d651df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2676,7 +2676,7 @@ MonoBehaviour:
   cameras:
   - {fileID: 342261394}
   - {fileID: 2041817079}
-  enableTracking: 0
+  enableTracking: 1
   numberOfPlayers: 4
   numberOfBaseStations: 4
   screenToWorldPosTracking: 1
@@ -8212,15 +8212,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 705561775665358165, guid: 930b7a19d446f4b4c9c810e37e84e625, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 705561775665358165, guid: 930b7a19d446f4b4c9c810e37e84e625, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 705561775665358165, guid: 930b7a19d446f4b4c9c810e37e84e625, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 705561775665358165, guid: 930b7a19d446f4b4c9c810e37e84e625, type: 3}
       propertyPath: m_LocalPosition.x
