@@ -50,7 +50,6 @@ public class EnemyController : MonoBehaviour
 
     private Rigidbody rigid_body;
 
-
     /// <summary>
     /// ////////////////////  SPECIAL BALOON STUFF
     /// </summary>
@@ -67,7 +66,7 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
-
+       
         rigid_body = GetComponent<Rigidbody>();
 
         OBJECTIVE = GameObject.Find("Objective");
@@ -79,13 +78,13 @@ public class EnemyController : MonoBehaviour
 
         if(p < 0.333333f) {
             height = Height.Low;
-            gameObject.transform.position += new Vector3(0, 0.425f, 0) * IRL2UNITY; //added height for player visual feedback
+            gameObject.transform.position += new Vector3(0, 0.3f, 0); // * IRL2UNITY; //added height for player visual feedback
         } else if(p < 0.666666f) { 
             height = Height.Medium;
-            gameObject.transform.position += new Vector3(0, 1.6f, 0) * IRL2UNITY;
+            gameObject.transform.position += new Vector3(0, 0.8f, 0); // * IRL2UNITY;
         } else {
             height = Height.High;
-            gameObject.transform.position += new Vector3(0, 2f, 0) * IRL2UNITY;
+            gameObject.transform.position += new Vector3(0, 2f, 0); // * IRL2UNITY;
         }
 
         SpawnerHelp help = GameObject.Find("GameController").GetComponent<SpawnerHelp>(); 
@@ -241,7 +240,7 @@ public class EnemyController : MonoBehaviour
             return; 
         }
 
-        float attack_height = other.transform.position.y * UNITY2IRL;
+        float attack_height = other.transform.position.y; // * UNITY2IRL;
         Height attack_height_enum; 
 
         if (attack_height <= LOW_MEDIUM_BOUNDARY) //Low

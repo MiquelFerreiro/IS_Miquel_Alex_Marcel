@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     public bool manual;
     void Start()
     {
+        if (GameObject.Find("PluginController").GetComponent<PluginConnector>().get_is_tracking_enabled()) {
+            transform.position += new Vector3(0, 1.5f, 0);
+        }
 
     }
 

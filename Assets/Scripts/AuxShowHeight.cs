@@ -14,7 +14,7 @@ public class AuxShowHeight : MonoBehaviour
     void Update()
     {
 
-        tmp.text = string.Format("{0}\n{1}", p1.transform.position.y * EnemyController.UNITY2IRL, p2.transform.position.y * EnemyController.UNITY2IRL); 
+        tmp.text = string.Format("{0}\n{1}", p1.transform.position.y, p2.transform.position.y); 
 
     }
 }
