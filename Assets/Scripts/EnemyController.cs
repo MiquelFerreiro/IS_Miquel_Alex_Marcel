@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public static float IRL2UNITY = 1f; //conversion factor for distances between unity and irl. 
-    public static float UNITY2IRL = 1f; //conversion factor for distances between unity and irl. 
+    public static float IRL2UNITY = 100f / 6f; //conversion factor for distances between unity and irl. 
+    public static float UNITY2IRL = 6f / 100f; //conversion factor for distances between unity and irl. 
     
     //Por abajo de cadera es abajo; por encima de hombros es arriba
     public enum Height { 
@@ -45,7 +45,7 @@ public class EnemyController : MonoBehaviour
     private const float DEATH_TIMER_REPLENISMENT_RATE = 0.3f; // An enemy almost died recovers in 1/DEATH_TIMER_REPLENISMENT_RATE seconds
     private float death_timer = DEATH_TIMER_MAX; //time in seconds
 
-    private const float WARNING_TIMER_MAX = 2f;
+    private const float WARNING_TIMER_MAX = 1.2f;
     private float warning_timer = WARNING_TIMER_MAX;
 
     private Rigidbody rigid_body;
@@ -79,13 +79,13 @@ public class EnemyController : MonoBehaviour
 
         if(p < 0.333333f) {
             height = Height.Low;
-            gameObject.transform.position += new Vector3(0, 0.425f, 0); //added height for player visual feedback
+            gameObject.transform.position += new Vector3(0, 0.425f, 0) * IRL2UNITY; //added height for player visual feedback
         } else if(p < 0.666666f) { 
             height = Height.Medium;
-            gameObject.transform.position += new Vector3(0, 1.6f, 0);
+            gameObject.transform.position += new Vector3(0, 1.6f, 0) * IRL2UNITY;
         } else {
             height = Height.High;
-            gameObject.transform.position += new Vector3(0, 2f, 0);
+            gameObject.transform.position += new Vector3(0, 2f, 0) * IRL2UNITY;
         }
 
         SpawnerHelp help = GameObject.Find("GameController").GetComponent<SpawnerHelp>(); 
@@ -126,15 +126,15 @@ public class EnemyController : MonoBehaviour
             }//add more types here
 
         }
-
+        /*
         if (!GameObject.Find("PluginController").GetComponent<PluginConnector>().get_is_tracking_enabled())
         {
-            //Poner factores de conversión si se controla an local
-            //EnemyController.IRL2UNITY = 100f / 6f; 
-            //
-            //EnemyController.UNITY2IRL = 6f / 100f;
+            Poner factores de conversión si se controla an local
+            EnemyController.IRL2UNITY = 100f / 6f; 
+            
+            EnemyController.UNITY2IRL = 6f / 100f;
         }
-
+        */
 
     }
 
@@ -276,13 +276,6 @@ public class EnemyController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Finish"))
-        {
-            EnemySpawner.remove_enemy(gameObject);
-            Destroy(gameObject);
-            EnemySpawner.SOUND_CONTROLLER.PlayTakeDamage();
-
-        }
-        else if (other.CompareTag("Player"))
         {
             EnemySpawner.remove_enemy(gameObject);
             Destroy(gameObject);
