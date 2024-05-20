@@ -131,6 +131,7 @@ public class EnemyController : MonoBehaviour
         {
             //Poner factores de conversión si se controla an local
             //EnemyController.IRL2UNITY = 100f / 6f; 
+            //
             //EnemyController.UNITY2IRL = 6f / 100f;
         }
 
@@ -275,6 +276,13 @@ public class EnemyController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Finish"))
+        {
+            EnemySpawner.remove_enemy(gameObject);
+            Destroy(gameObject);
+            EnemySpawner.SOUND_CONTROLLER.PlayTakeDamage();
+
+        }
+        else if (other.CompareTag("Player"))
         {
             EnemySpawner.remove_enemy(gameObject);
             Destroy(gameObject);
