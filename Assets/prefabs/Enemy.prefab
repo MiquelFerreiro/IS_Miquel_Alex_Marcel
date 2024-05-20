@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   height: 0
+  type: 0
   visual: {fileID: 0}
 --- !u!136 &387317234710939907
 CapsuleCollider:

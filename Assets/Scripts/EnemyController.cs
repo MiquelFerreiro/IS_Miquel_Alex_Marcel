@@ -70,17 +70,22 @@ public class EnemyController : MonoBehaviour
 
         rigid_body = GetComponent<Rigidbody>();
 
+        OBJECTIVE = GameObject.Find("Objective");
+
         rigid_body.mass = Mathf.Clamp(Utils.GetNumberNormal() * 0.5f + 1, 0.01f, 100f);
         rigid_body.velocity = new Vector3(-transform.position.z + 50, transform.position.y, transform.position.x - 50) * 1 / 10;
 
         float p = Random.value;
 
         if(p < 0.333333f) {
-            height = Height.Low; 
+            height = Height.Low;
+            gameObject.transform.position += new Vector3(0, 0.425f, 0); //added height for player visual feedback
         } else if(p < 0.666666f) { 
-            height = Height.Medium; 
+            height = Height.Medium;
+            gameObject.transform.position += new Vector3(0, 1.6f, 0);
         } else {
-            height = Height.High; 
+            height = Height.High;
+            gameObject.transform.position += new Vector3(0, 2f, 0);
         }
 
         SpawnerHelp help = GameObject.Find("GameController").GetComponent<SpawnerHelp>(); 
@@ -125,8 +130,8 @@ public class EnemyController : MonoBehaviour
         if (!GameObject.Find("PluginController").GetComponent<PluginConnector>().get_is_tracking_enabled())
         {
             //Poner factores de conversión si se controla an local
-            EnemyController.IRL2UNITY = 100f / 6f; 
-            EnemyController.UNITY2IRL = 6f / 100f;
+            //EnemyController.IRL2UNITY = 100f / 6f; 
+            //EnemyController.UNITY2IRL = 6f / 100f;
         }
 
 
@@ -158,9 +163,10 @@ public class EnemyController : MonoBehaviour
         {
 
             Vector3 force_dir = OBJECTIVE.transform.position - transform.position;
-            //force_dir = force_dir.normalized;
+            force_dir.y = 0;
+            force_dir = force_dir.normalized;
 
-            rigid_body.AddForce(30 * force_dir.normalized / force_dir.magnitude);
+            rigid_body.AddForce(0.5f * force_dir);
             //rigid_body.velocity = force_dir*5;
         } else
         {
@@ -272,6 +278,8 @@ public class EnemyController : MonoBehaviour
         {
             EnemySpawner.remove_enemy(gameObject);
             Destroy(gameObject);
+            EnemySpawner.SOUND_CONTROLLER.PlayTakeDamage();
+
         }
 
     }
