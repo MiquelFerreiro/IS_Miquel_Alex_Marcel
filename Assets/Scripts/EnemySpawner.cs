@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -25,7 +26,12 @@ public class EnemySpawner : MonoBehaviour
     private Transform player_1; 
     private Transform player_2;
 
-    public static SoundController SOUND_CONTROLLER; 
+    public static SoundController SOUND_CONTROLLER;
+
+
+    public const int MAX_LIVES = 5;
+    public static int player_lives = MAX_LIVES; 
+    public static TextMeshProUGUI lives_tmp;
 
 
     void Start()
@@ -54,6 +60,8 @@ public class EnemySpawner : MonoBehaviour
         SOUND_CONTROLLER = GameObject.Find("SoundController").GetComponent<SoundController>();
         EnemyController.OBJECTIVE = GameObject.Find("Objective");
 
+        lives_tmp = GameObject.Find("LivesDisplay").GetComponent<TextMeshProUGUI>();
+        lives_tmp.text = string.Format("Lives: {0}", player_lives);
 
     }
 
@@ -186,6 +194,14 @@ public class EnemySpawner : MonoBehaviour
         SoundController sound = GameObject.Find("SoundController").GetComponent<SoundController>();
         sound.PlayPopSound();
     }
+
+    public static void remove_live()
+    {
+        player_lives += -1; 
+        lives_tmp.text = string.Format("Lives: {0}", player_lives);
+
+    }
+
 }
 
 

@@ -11,9 +11,11 @@ public class ObjectiveBhvr : MonoBehaviour
         
         if(collision.rigidbody.CompareTag("Enemy"))
         {
+            EnemySpawner.remove_live(); 
             GameObject enemy = collision.gameObject;
             EnemySpawner.remove_enemy(enemy);
-            Destroy(enemy); 
+            Destroy(enemy);
+
         }
 
 

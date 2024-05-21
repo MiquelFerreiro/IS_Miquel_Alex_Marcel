@@ -172,15 +172,18 @@ public class EnemyController : MonoBehaviour
         {
 
             //Lines limits considered: 
-            //x = 0
-            //y = 0
-            //x - 100 = 0
-            //y - 100 = 0
+            //(1): x = 0
+            //(2): y = 0
+            //(3): x - 100 = 0
+            //(4): y - 100 = 0
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
             //float num = transform.position; 
-            float den = 0;
-            float distance_to_limit = float.PositiveInfinity; 
+            //float den = 1; //denominator is always 1 i npur case
+            float distance_to_limit = transform.position.x; //(1)
+
+            distance_to_limit = transform.position.y; //(2)
+ 
 
             //TODO: aply force from exterior
 
@@ -276,6 +279,7 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Finish"))
         {
+            EnemySpawner.remove_live();
             EnemySpawner.remove_enemy(gameObject);
             Destroy(gameObject);
             EnemySpawner.SOUND_CONTROLLER.PlayTakeDamage();
