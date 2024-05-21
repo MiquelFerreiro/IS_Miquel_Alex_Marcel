@@ -49,6 +49,9 @@ public class EnemyController : MonoBehaviour
     private float warning_timer = WARNING_TIMER_MAX;
 
     private Rigidbody rigid_body;
+    public const float MAX_SPEED = 10f;
+    public const float SQUARED_MAX_SPEED = MAX_SPEED * MAX_SPEED;
+    public const float DRAG_FORCE_MULTIPLIER = 5f; 
 
     /// <summary>
     /// ////////////////////  SPECIAL BALOON STUFF
@@ -159,39 +162,29 @@ public class EnemyController : MonoBehaviour
             EnemySpawner.SOUND_CONTROLLER.PlayWrongHeight();
         }
 
-        if(true) //this if will get optimized out
-        {
 
-            Vector3 force_dir = OBJECTIVE.transform.position - transform.position;
-            force_dir.y = 0;
-            force_dir = force_dir.normalized;
+        Vector3 force_dir = OBJECTIVE.transform.position - transform.position;
+        force_dir.y = 0;
+        force_dir = force_dir.normalized;
 
-            rigid_body.AddForce(0.5f * force_dir);
-            //rigid_body.velocity = force_dir*5;
-        } else
-        {
-
-            //Lines limits considered: 
-            //(1): x = 0
-            //(2): y = 0
-            //(3): x - 100 = 0
-            //(4): y - 100 = 0
-            //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-
-            //float num = transform.position; 
-            //float den = 1; //denominator is always 1 i npur case
-            float distance_to_limit = transform.position.x; //(1)
-
-            distance_to_limit = transform.position.y; //(2)
- 
-
-            //TODO: aply force from exterior
-
-        }
+        rigid_body.AddForce(0.5f * force_dir);
+        //rigid_body.velocity = force_dir*5;
+        
 
         if(type != Type.Simple)
         {
             handle_baloon_behaviour(); 
+        }
+
+        if(SQUARED_MAX_SPEED <= rigid_body.velocity.sqrMagnitude)
+        {
+
+            float signx = Mathf.Sign(rigid_body.velocity.x); 
+            float signz = Mathf.Sign(rigid_body.velocity.z); 
+            Vector3 speed_limiting_force = -rigid_body.velocity; 
+
+            //TODO: Add limiting force
+
         }
 
     }
