@@ -191,14 +191,15 @@ public class EnemySpawner : MonoBehaviour
     {
         enemy_list.Remove(enemy);
 
-        SoundController sound = GameObject.Find("SoundController").GetComponent<SoundController>();
-        sound.PlayPopSound();
+        SOUND_CONTROLLER.PlayPopSound();
     }
 
     public static void remove_live()
     {
         player_lives += -1; 
         lives_tmp.text = string.Format("Lives: {0}", player_lives);
+
+        SOUND_CONTROLLER.PlayTakeDamage();
 
     }
 

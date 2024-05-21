@@ -17,7 +17,7 @@ public class SoundController : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.clip = BaseMusic;
         audioSource.loop = true;
-        audioSource.volume = 0.1f;
+        audioSource.volume = 0.05f;
         audioSource.Play();
     }
 
@@ -27,11 +27,11 @@ public class SoundController : MonoBehaviour
     }
     public void PlayPopSound()
     {
-        audioSource.PlayOneShot(BalloonPop, 0.2f);
+        audioSource.PlayOneShot(BalloonPop, 2f);
     }
     public void PlayTakeDamage()
     {
-        audioSource.PlayOneShot(TakeDamage, 0.3f);
+        audioSource.PlayOneShot(TakeDamage, 2f);
     }
     public void PlayWrongHeight()
     {

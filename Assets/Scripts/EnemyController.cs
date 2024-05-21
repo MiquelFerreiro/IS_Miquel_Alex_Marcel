@@ -282,7 +282,6 @@ public class EnemyController : MonoBehaviour
             EnemySpawner.remove_live();
             EnemySpawner.remove_enemy(gameObject);
             Destroy(gameObject);
-            EnemySpawner.SOUND_CONTROLLER.PlayTakeDamage();
 
         }
 
