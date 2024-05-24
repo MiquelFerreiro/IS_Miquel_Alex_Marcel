@@ -27,6 +27,7 @@ public class EnemySpawner : MonoBehaviour
     private Transform player_2;
 
     public static SoundController SOUND_CONTROLLER;
+    public static SpaceshipAnimation Spaceship;
 
 
     public const int MAX_LIVES = 5;
@@ -62,6 +63,8 @@ public class EnemySpawner : MonoBehaviour
 
         lives_tmp = GameObject.Find("LivesDisplay").GetComponent<TextMeshProUGUI>();
         lives_tmp.text = string.Format("Lives: {0}", player_lives);
+
+        Spaceship = EnemyController.OBJECTIVE.GetComponent<SpaceshipAnimation>();
 
     }
 
@@ -200,6 +203,9 @@ public class EnemySpawner : MonoBehaviour
         lives_tmp.text = string.Format("Lives: {0}", player_lives);
 
         SOUND_CONTROLLER.PlayTakeDamage();
+
+        Spaceship.ChangeMaterial();
+
 
     }
 
