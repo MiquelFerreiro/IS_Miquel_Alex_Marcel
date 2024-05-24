@@ -128,15 +128,7 @@ public class EnemyController : MonoBehaviour
             }//add more types here
 
         }
-        /*
-        if (!GameObject.Find("PluginController").GetComponent<PluginConnector>().get_is_tracking_enabled())
-        {
-            Poner factores de conversión si se controla an local
-            EnemyController.IRL2UNITY = 100f / 6f; 
-            
-            EnemyController.UNITY2IRL = 6f / 100f;
-        }
-        */
+      
 
     }
 
@@ -167,7 +159,7 @@ public class EnemyController : MonoBehaviour
         force_dir.y = 0;
         force_dir = force_dir.normalized;
 
-        rigid_body.AddForce(0.5f * force_dir);
+        //rigid_body.AddForce(0.5f * force_dir);
         //rigid_body.velocity = force_dir*5;
         
 
@@ -233,6 +225,7 @@ public class EnemyController : MonoBehaviour
         if(type != Type.Simple)
         {
             death_timer += -Time.deltaTime;
+            visual.transform.localScale += Vector3.one * Time.deltaTime;
             return; 
         }
 
@@ -256,7 +249,8 @@ public class EnemyController : MonoBehaviour
 
         if(attack_height_enum == height)
         {
-            death_timer += -Time.deltaTime; 
+            death_timer += -Time.deltaTime;
+            visual.transform.localScale += Vector3.one * Time.deltaTime;
 
         } else {
             //the user is atacking at the wrong spot
