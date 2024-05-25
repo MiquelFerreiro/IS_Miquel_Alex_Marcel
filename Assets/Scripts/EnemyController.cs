@@ -61,7 +61,19 @@ public class EnemyController : MonoBehaviour
     //special variable that can serve multiple pruposes depending the special type of the baloon
     private float special_auxiliar = 0f; 
     // An enemy almost died recovers in 1/DEATH_TIMER_REPLENISMENT_RATE seconds
-    private const float SP_DOUBLE_DEATH_TIMER_REPLENISMENT_RATE = 1.1f; //greater than 1
+    //private const float SP_DOUBLE_DEATH_TIMER_REPLENISMENT_RATE = 1.1f; //greater than 1
+
+    private float startTime;
+
+    public GameObject Number2;
+
+    private GameObject Player1;
+
+    private GameObject Player2;
+
+    private bool touchingP1;
+
+    private bool touchingP2;
 
     /// <summary>
     /// ////////////////////  SPECIAL BALOON STUFF
@@ -75,7 +87,9 @@ public class EnemyController : MonoBehaviour
         OBJECTIVE = GameObject.Find("Objective");
 
         rigid_body.mass = Mathf.Clamp(Utils.GetNumberNormal() * 0.5f + 1, 0.01f, 100f);
-        rigid_body.velocity = new Vector3(-transform.position.z + 50, transform.position.y, transform.position.x - 50) * 1 / 10;
+
+        //rigid_body.velocity = new Vector3(-transform.position.z + 50, 0, transform.position.x - 50) * 1 / 10;
+        //da errores... lo cambio por AddForce en Update
 
         float p = Random.value;
 
@@ -110,6 +124,8 @@ public class EnemyController : MonoBehaviour
         visual.transform.localPosition = Vector3.zero; 
         visual.transform.localRotation = Quaternion.identity;
 
+        
+
         //if (false) // testing
         if (SPECIAL_BALOON_CHANCE < Random.value)
         {
@@ -119,7 +135,15 @@ public class EnemyController : MonoBehaviour
             p = Random.value;
             if(p <= 0.5f)
             {
-                type = Type.Double; 
+                type = Type.Double;
+                //visual feedback Double
+                Number2 = Instantiate(help.Number2);
+
+                Number2.transform.parent = gameObject.transform;
+                Number2.transform.localPosition = new Vector3(0, 1.5f, 0);
+                Number2.transform.eulerAngles = new Vector3(90, 0, 0);
+
+
             } else
             {
                 type = Type.Leaking;
@@ -128,8 +152,14 @@ public class EnemyController : MonoBehaviour
             }//add more types here
 
         }
-      
 
+        startTime = Time.time;
+
+        touchingP1 = false;
+        touchingP2 = false;
+
+        Player1 = GameObject.Find("Player1");
+        Player2 = GameObject.Find("Player2");
     }
 
     void Update()
@@ -139,15 +169,10 @@ public class EnemyController : MonoBehaviour
             Destroy(gameObject);
 
         }
-        if (type == Type.Double)
-        {
-            death_timer = Mathf.Clamp(death_timer + Time.deltaTime * SP_DOUBLE_DEATH_TIMER_REPLENISMENT_RATE, 0f, DEATH_TIMER_MAX);
-        } else
-        {
-            death_timer = Mathf.Clamp(death_timer + Time.deltaTime * DEATH_TIMER_REPLENISMENT_RATE, 0f, DEATH_TIMER_MAX); 
-        }
-    
-        if(warning_timer <= 0f) {
+
+        death_timer = Mathf.Clamp(death_timer + Time.deltaTime * DEATH_TIMER_REPLENISMENT_RATE, 0f, DEATH_TIMER_MAX);
+
+        if (warning_timer <= 0f) {
             Debug.Log("NOT THE RIGHT HEIGHT!! ");
             warning_timer = WARNING_TIMER_MAX;
 
@@ -159,11 +184,15 @@ public class EnemyController : MonoBehaviour
         force_dir.y = 0;
         force_dir = force_dir.normalized;
 
-        //rigid_body.AddForce(0.5f * force_dir);
-        //rigid_body.velocity = force_dir*5;
-        
+        rigid_body.AddForce(1f * force_dir);
 
-        if(type != Type.Simple)
+        // Fuerza paralela
+        if (Time.time - startTime < 10f)
+        {
+            rigid_body.AddForce(0.5f * new Vector3(-force_dir.z, 0, force_dir.x));
+        }
+        
+        if (type != Type.Simple)
         {
             handle_baloon_behaviour(); 
         }
@@ -178,6 +207,8 @@ public class EnemyController : MonoBehaviour
             //TODO: Add limiting force
 
         }
+
+
 
     }
 
@@ -204,7 +235,7 @@ public class EnemyController : MonoBehaviour
                     Vector3 dir = new Vector3(Mathf.Cos(theta), 0f, Mathf.Sin(theta));
                     float impulse_strength = Utils.GetNumberNormal() * 2f + 5f;
 
-                    rigid_body.AddForce(impulse_strength * dir, ForceMode.Impulse);
+                    rigid_body.AddForce(impulse_strength * dir);
                 }
                 break;
             default:
@@ -222,12 +253,6 @@ public class EnemyController : MonoBehaviour
 
         if (!other.CompareTag("Player")) return;
 
-        if(type != Type.Simple)
-        {
-            death_timer += -Time.deltaTime;
-            visual.transform.localScale += Vector3.one * Time.deltaTime;
-            return; 
-        }
 
         float attack_height = other.transform.position.y; // * UNITY2IRL;
         Height attack_height_enum; 
@@ -247,10 +272,27 @@ public class EnemyController : MonoBehaviour
 
 
 
-        if(attack_height_enum == height)
+        if (attack_height_enum == height)
         {
+
+            if (type == Type.Double)
+            {
+                if (touchingP1 && touchingP2)
+                {
+                    death_timer += -Time.deltaTime;
+                    visual.transform.localScale += Vector3.one * Time.deltaTime;
+                }
+                else
+                {
+                    warning_timer += -Time.deltaTime;
+                }
+                return;
+            } 
+            else 
+            { 
             death_timer += -Time.deltaTime;
-            visual.transform.localScale += Vector3.one * Time.deltaTime;
+            visual.transform.localScale += Vector3.one * Time.deltaTime; 
+            }
 
         } else {
             //the user is atacking at the wrong spot
@@ -272,8 +314,27 @@ public class EnemyController : MonoBehaviour
 
         }
 
+        if (other.gameObject == Player1)
+        {
+            touchingP1 = true;
+        }
+        else if (other.gameObject == Player2)
+        {
+            touchingP2 = true;
+        }
+
     }
 
-
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == Player1)
+        {
+            touchingP1 = false;
+        }
+        else if (other.gameObject == Player2)
+        {
+            touchingP2 = false;
+        }
+    }
 
 }

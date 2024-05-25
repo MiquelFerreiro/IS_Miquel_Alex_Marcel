@@ -8,4 +8,6 @@ public class SpawnerHelp : MonoBehaviour {
     public GameObject green_visual_enemy; 
     public GameObject blue_visual_enemy;
 
+    public GameObject Number2;
+
 }

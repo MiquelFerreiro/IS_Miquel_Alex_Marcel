@@ -48,6 +48,7 @@ MonoBehaviour:
   height: 0
   type: 0
   visual: {fileID: 0}
+  Number2: {fileID: 3074154210045602003, guid: e52ecae178f09d041a6d92e69185a7b0, type: 3}
 --- !u!136 &387317234710939907
 CapsuleCollider:
   m_ObjectHideFlags: 0
