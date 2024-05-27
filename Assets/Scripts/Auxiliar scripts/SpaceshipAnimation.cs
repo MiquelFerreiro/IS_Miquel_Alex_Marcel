@@ -86,4 +86,28 @@ public class SpaceshipAnimation : MonoBehaviour
         renderer.material = original_material;
     }
 
+    public void StartRotation()
+    {
+        isRotating = true;
+        rotationTimer = 0f;
+    }
+
+    public void RotateObject()
+    {
+        transform.Rotate(Vector3.up, 10f);
+        num_rotations++;
+
+        if (num_rotations == 36) // Una rotación completa
+        {
+            FinishRotation();
+        }
+    }
+
+    public void FinishRotation()
+    {
+        isRotating = false;
+        num_rotations = 0;
+    }
+
+
 }

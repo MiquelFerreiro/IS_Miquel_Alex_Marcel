@@ -10,6 +10,7 @@ public class SoundController : MonoBehaviour
     public AudioClip BalloonPop;
     public AudioClip TakeDamage;
     public AudioClip WrongHeight;
+    public AudioClip YouLose;
 
     private AudioSource audioSource;
     void Start()
@@ -37,5 +38,14 @@ public class SoundController : MonoBehaviour
     {
         audioSource.PlayOneShot(WrongHeight, 2f);
     }
-    
+    public void PlayYouLose()
+    {
+        audioSource.PlayOneShot(YouLose, 2f);
+
+    }
+    public void MuteAllSounds()
+    {
+        audioSource.Stop();
+    }
+
 }
