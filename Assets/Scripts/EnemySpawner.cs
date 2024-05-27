@@ -32,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
 
 
     public const int MAX_LIVES = 3;
-    public static int player_lives = MAX_LIVES; 
+    public static int player_lives = MAX_LIVES;
     public static TextMeshProUGUI lives_tmp;
 
 
@@ -68,33 +68,37 @@ public class EnemySpawner : MonoBehaviour
         Spaceship = EnemyController.OBJECTIVE.GetComponent<SpaceshipAnimation>();
         Gover = GameObject.Find("GameOver").GetComponent<GameOver>();
 
+        
+
     }
 
     void Update()
     {
-        time_for_enemy_spawn += -Time.deltaTime; 
-        //TODO: remove deleted elements
-        int enemy_count = enemy_list.Count; 
+        if (!Gover.isGameOver) {
 
-        if(max_enemy_count <= enemy_count) return;
+            time_for_enemy_spawn += -Time.deltaTime; 
+            //TODO: remove deleted elements
+            int enemy_count = enemy_list.Count; 
 
-        if(enemy_count < min_enemy_count )
-        {
-            time_for_enemy_spawn = -Time.deltaTime * (fast_spawn_multiplier - 1); 
-            //object spawns 4 times as fast
+            if(max_enemy_count <= enemy_count) return;
 
-        } else if(enemy_count < max_enemy_count)
-        {
-            //dont do anything.
-            //Let the compiler optimize this
+            if(enemy_count < min_enemy_count )
+            {
+                time_for_enemy_spawn = -Time.deltaTime * (fast_spawn_multiplier - 1); 
+                //object spawns 4 times as fast
+
+            } else if(enemy_count < max_enemy_count)
+            {
+                //dont do anything.
+                //Let the compiler optimize this
+            }
+
+            if (time_for_enemy_spawn <= 0)
+            {
+                spawn_enemy();
+                time_for_enemy_spawn = time_for_next_spawn();
+            }
         }
-
-        if (time_for_enemy_spawn <= 0)
-        {
-            spawn_enemy();
-            time_for_enemy_spawn = time_for_next_spawn();
-        }
-
     }
 
     void spawn_enemy()

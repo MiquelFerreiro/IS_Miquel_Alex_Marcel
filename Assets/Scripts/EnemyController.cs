@@ -187,7 +187,7 @@ public class EnemyController : MonoBehaviour
         rigid_body.AddForce(1f * force_dir);
 
         // Fuerza paralela
-        if (Time.time - startTime < 10f)
+        if (Time.time - startTime < 6f)
         {
             rigid_body.AddForce(0.5f * new Vector3(-force_dir.z, 0, force_dir.x));
         }
