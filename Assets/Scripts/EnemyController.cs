@@ -240,7 +240,7 @@ public class EnemyController : MonoBehaviour
                     special_auxiliar = (1 - Random.value * Random.value) * 2f + 1.5f;
                     float theta = Random.value * 2 * Mathf.PI;
                     Vector3 dir = new Vector3(Mathf.Cos(theta), 0f, Mathf.Sin(theta));
-                    float impulse_strength = Utils.GetNumberNormal() * 2f + 5f;
+                    float impulse_strength = Utils.GetNumberNormal() * 0.75f + 2.5f;
 
                     rigid_body.AddForce(impulse_strength * dir);
                 }
