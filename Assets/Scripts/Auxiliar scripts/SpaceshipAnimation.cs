@@ -24,6 +24,10 @@ public class SpaceshipAnimation : MonoBehaviour
 
     private Material original_material;
 
+    private float animation_progress = 0f;
+    private const float ANIMATION_TIME = 2f; 
+    private Quaternion start_rotation = Quaternion.identity;
+
     void Start()
     {
         renderer = visual.GetComponent<Renderer>();
@@ -51,20 +55,39 @@ public class SpaceshipAnimation : MonoBehaviour
             {
                 isRotating = true;
                 rotationTimer = 0f;
+                start_rotation = transform.rotation; 
             }
         }
         else
         {
-            // Rotate the object continuously
-            transform.Rotate(Vector3.up, 10f);
-
-            num_rotations++;
-
-            // Check if the rotation is complete
-            if (num_rotations == 36)
+            if(false)
             {
-                isRotating = false;
-                num_rotations = 0;
+
+                // Rotate the object continuously
+                transform.Rotate(Vector3.up, 10f);
+
+                num_rotations++;
+
+                // Check if the rotation is complete
+                if (num_rotations == 36)
+                {
+                    isRotating = false;
+                    num_rotations = 0;
+                }
+            } 
+            else
+            {
+                animation_progress += Time.deltaTime;
+                float x = Mathf.SmoothStep(0, 1, animation_progress / ANIMATION_TIME);
+                //Debug.Log(animation_progress / ANIMATION_TIME); 
+                //Debug.Log(x);
+                Quaternion rot = Quaternion.Euler(0, x * 360f, 0); 
+                transform.rotation = start_rotation * rot; 
+                if (ANIMATION_TIME <= animation_progress)
+                {
+                    isRotating = false;
+                    animation_progress = 0f;
+                }
             }
         }
     }
