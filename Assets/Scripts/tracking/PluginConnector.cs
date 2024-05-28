@@ -497,17 +497,17 @@ public class PluginConnector : MonoBehaviour
             players[playerSelected - 1].transform.Translate((1f / 10f) * Vector3.down * Time.deltaTime * trackingDisabledPlayerSpeed);
         }
     }
-
+    
     private void UpdateInterfaceText()
     {
-        scaleText.text = calibrationScale.ToString();
+        /*scaleText.text = calibrationScale.ToString();
         if (sheerX != 0)
         {
             sheerXText.text = sheerX.ToString().Substring(0, 5);
             sheerYText.text = sheerY.ToString().Substring(0, 5);
-        }
+        }*/
     }
-
+    
     //returns a string from a given vector3 (used for display in the interface)
     private string Vector3ToString(Vector3 vector)
     {

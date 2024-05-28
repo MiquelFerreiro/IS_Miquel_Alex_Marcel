@@ -48,6 +48,7 @@ MonoBehaviour:
   height: 0
   type: 0
   visual: {fileID: 0}
+  special_auxiliar: 0
   Number2: {fileID: 3074154210045602003, guid: e52ecae178f09d041a6d92e69185a7b0, type: 3}
 --- !u!136 &387317234710939907
 CapsuleCollider:
@@ -77,5 +78,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
