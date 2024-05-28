@@ -59,7 +59,7 @@ public class EnemyController : MonoBehaviour
     //NOTE: the prefix "SP_<type>_" means that this is a variable used only when the ballon is special and of type <type>
 
     //special variable that can serve multiple pruposes depending the special type of the baloon
-    private float special_auxiliar = 0f; 
+    [SerializeField] private float special_auxiliar = 0f; 
     // An enemy almost died recovers in 1/DEATH_TIMER_REPLENISMENT_RATE seconds
     //private const float SP_DOUBLE_DEATH_TIMER_REPLENISMENT_RATE = 1.1f; //greater than 1
 
@@ -147,7 +147,7 @@ public class EnemyController : MonoBehaviour
             } else
             {
                 type = Type.Leaking;
-                special_auxiliar = (1 - Random.value * Random.value) * 2f + 1.5f; 
+                special_auxiliar = (1 - Random.value * Random.value) * 3f + 5f;
 
             }//add more types here
 
@@ -184,7 +184,7 @@ public class EnemyController : MonoBehaviour
         force_dir.y = 0;
         force_dir = force_dir.normalized;
 
-        rigid_body.AddForce(1f * force_dir);
+        rigid_body.AddForce(2f * force_dir);
 
         // Fuerza paralela
         if (Time.time - startTime < 6f)
@@ -218,9 +218,7 @@ public class EnemyController : MonoBehaviour
 
     void handle_baloon_behaviour()
     {
-
-        transform.localScale = Vector3.one * (1f + 0.2f * Mathf.Sin(Time.realtimeSinceStartup * 4f));
-        //TODO: ^remove this. Testing only, to easly detect special baloons
+      
 
         switch (type)
         {
@@ -230,20 +228,22 @@ public class EnemyController : MonoBehaviour
             case Type.Double:
                 break;
             case Type.Leaking:
+                transform.localScale = Vector3.one * (1f + 0.5f * Mathf.Sin(Time.realtimeSinceStartup * 4f));
                 special_auxiliar += -Time.deltaTime;
                 if (special_auxiliar <= 1f)
                 {
                     rigid_body.velocity *= 0.8f; 
                     //deveriamos usal exponenciales para tener en cuenta los fps variables, pero pasando
                 }
-                else if (special_auxiliar <= 0f)
+                
+                if (special_auxiliar <= 0f)
                 {
-                    special_auxiliar = (1 - Random.value * Random.value) * 2f + 1.5f;
+                    special_auxiliar = (1 - Random.value * Random.value) * 3f + 5f;
                     float theta = Random.value * 2 * Mathf.PI;
                     Vector3 dir = new Vector3(Mathf.Cos(theta), 0f, Mathf.Sin(theta));
-                    float impulse_strength = Utils.GetNumberNormal() * 0.75f + 2.5f;
+                    float impulse_strength = Utils.GetNumberNormal() * 2f + 2.5f;
 
-                    rigid_body.AddForce(impulse_strength * dir);
+                    rigid_body.AddForce(impulse_strength * dir, ForceMode.Impulse);
                 }
                 break;
             default:
@@ -288,7 +288,7 @@ public class EnemyController : MonoBehaviour
                 if (touchingP1 && touchingP2)
                 {
                     death_timer += -Time.deltaTime;
-                    visual.transform.localScale += Vector3.one * Time.deltaTime;
+                    visual.transform.localScale += 2*Vector3.one * Time.deltaTime;
                 }
                 else
                 {
@@ -299,7 +299,7 @@ public class EnemyController : MonoBehaviour
             else 
             { 
             death_timer += -Time.deltaTime;
-            visual.transform.localScale += Vector3.one * Time.deltaTime; 
+            visual.transform.localScale += 2*Vector3.one * Time.deltaTime; 
             }
 
         } else {

@@ -31,7 +31,7 @@ public class EnemySpawner : MonoBehaviour
     public static GameOver Gover;
 
 
-    public const int MAX_LIVES = 3;
+    public const int MAX_LIVES = 100;
     public static int player_lives = MAX_LIVES;
     public static TextMeshProUGUI lives_tmp;
 
