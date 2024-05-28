@@ -86,7 +86,7 @@ public class EnemyController : MonoBehaviour
 
         OBJECTIVE = GameObject.Find("Objective");
 
-        rigid_body.mass = Mathf.Clamp(Utils.GetNumberNormal() * 0.5f + 1, 0.01f, 100f);
+        rigid_body.mass = Mathf.Clamp(Utils.GetNumberNormal() * 0.43f + 1.3f, 0.25f, 5f);
 
         //rigid_body.velocity = new Vector3(-transform.position.z + 50, 0, transform.position.x - 50) * 1 / 10;
         //da errores... lo cambio por AddForce en Update
@@ -200,11 +200,14 @@ public class EnemyController : MonoBehaviour
         if(SQUARED_MAX_SPEED <= rigid_body.velocity.sqrMagnitude)
         {
 
-            float signx = Mathf.Sign(rigid_body.velocity.x); 
+            /*float signx = Mathf.Sign(rigid_body.velocity.x); 
             float signz = Mathf.Sign(rigid_body.velocity.z); 
             Vector3 speed_limiting_force = -rigid_body.velocity; 
-
+            */
             //TODO: Add limiting force
+
+            float force_mult = Mathf.Exp(-Time.deltaTime * 1.0f); 
+            rigid_body.velocity *= force_mult;
 
         }
 
@@ -228,7 +231,11 @@ public class EnemyController : MonoBehaviour
                 break;
             case Type.Leaking:
                 special_auxiliar += -Time.deltaTime;
-                if (special_auxiliar <= 0f)
+                if (special_auxiliar <= 1f)
+                {
+                    rigid_body.velocity *= 0.8f; //deveriamos usal exponenciales para tener en cuenta los fps variables, pero pasando
+                }
+                else if (special_auxiliar <= 0f)
                 {
                     special_auxiliar = (1 - Random.value * Random.value) * 2f + 1.5f;
                     float theta = Random.value * 2 * Mathf.PI;
