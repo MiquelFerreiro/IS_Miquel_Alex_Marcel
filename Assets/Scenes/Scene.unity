@@ -9308,8 +9308,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2139961562}
   - component: {fileID: 2139961560}
-  - component: {fileID: 2139961559}
   - component: {fileID: 2139961561}
+  - component: {fileID: 2139961559}
   m_Layer: 0
   m_Name: Objective
   m_TagString: Finish
@@ -9383,10 +9383,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52676611e64fb124999bda745d4375a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yRotation: 1
   rotationSpeed: 720
   visual: {fileID: 397469034}
   damage_material: {fileID: 2100000, guid: f7c44137da6380949bc4ec5c19f59213, type: 2}
+  yRotation: 60
 --- !u!4 &2139961562
 Transform:
   m_ObjectHideFlags: 0

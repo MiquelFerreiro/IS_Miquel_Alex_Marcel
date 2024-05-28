@@ -233,7 +233,8 @@ public class EnemyController : MonoBehaviour
                 special_auxiliar += -Time.deltaTime;
                 if (special_auxiliar <= 1f)
                 {
-                    rigid_body.velocity *= 0.8f; //deveriamos usal exponenciales para tener en cuenta los fps variables, pero pasando
+                    rigid_body.velocity *= 0.8f; 
+                    //deveriamos usal exponenciales para tener en cuenta los fps variables, pero pasando
                 }
                 else if (special_auxiliar <= 0f)
                 {
