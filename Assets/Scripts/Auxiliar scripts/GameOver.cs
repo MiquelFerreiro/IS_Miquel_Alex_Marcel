@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
 {
@@ -33,8 +34,20 @@ public class GameOver : MonoBehaviour
 
         isGameOver = true;
 
-        
+        StartCoroutine(RestartGameWithDelay(10f));
+    }
 
+    IEnumerator RestartGameWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // Wait for the specified delay
+        RestartGame();
+    }
+    public void RestartGame()
+    {
+        // Get the currently active scene
+        Scene currentScene = SceneManager.GetActiveScene();
 
+        // Reload the current scene
+        SceneManager.LoadScene(currentScene.name);
     }
 }

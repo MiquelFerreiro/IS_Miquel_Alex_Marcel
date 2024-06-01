@@ -31,8 +31,8 @@ public class EnemySpawner : MonoBehaviour
     public static GameOver Gover;
 
 
-    public const int MAX_LIVES = 100;
-    public static int player_lives = MAX_LIVES;
+    public const int MAX_LIVES = 5;
+    public static int player_lives;
     public static TextMeshProUGUI lives_tmp;
 
 
@@ -62,14 +62,16 @@ public class EnemySpawner : MonoBehaviour
         SOUND_CONTROLLER = GameObject.Find("SoundController").GetComponent<SoundController>();
         EnemyController.OBJECTIVE = GameObject.Find("Objective");
 
+        player_lives = MAX_LIVES;
+
         lives_tmp = GameObject.Find("LivesDisplay").GetComponent<TextMeshProUGUI>();
         lives_tmp.text = string.Format("Lives: {0}", player_lives);
 
         Spaceship = EnemyController.OBJECTIVE.GetComponent<SpaceshipAnimation>();
         Gover = GameObject.Find("GameOver").GetComponent<GameOver>();
 
-        
 
+        
     }
 
     void Update()

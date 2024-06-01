@@ -10,4 +10,8 @@ public class SpawnerHelp : MonoBehaviour {
 
     public GameObject Number2;
 
+    public GameObject red_visual_leaking;
+    public GameObject green_visual_leaking;
+    public GameObject blue_visual_leaking;
+
 }

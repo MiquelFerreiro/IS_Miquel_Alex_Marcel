@@ -33,7 +33,8 @@ public class EnemyController : MonoBehaviour
 
     public const float LOW_MEDIUM_BOUNDARY = 0.85f; //Boundary between low and medium height
     public const float MEDIUM_HIGH_BOUNDARY = 1.4875f; //Boundary between medium and high height
-    public const float SPECIAL_BALOON_CHANCE = 0.2f; //Chance to get a special baloon instead of a regular one
+
+    public float SPECIAL_BALOON_CHANCE = 0.2f; //Chance to get a special baloon instead of a regular one
 
 
     public Height height; 
@@ -104,36 +105,17 @@ public class EnemyController : MonoBehaviour
             gameObject.transform.position += new Vector3(0, 2f, 0); // * IRL2UNITY;
         }
 
-        SpawnerHelp help = GameObject.Find("GameController").GetComponent<SpawnerHelp>(); 
-        switch ( height )
-        {
-            case Height.Low:
-
-                visual = Instantiate( help.red_visual_enemy);
-                break;
-            case Height.Medium:
-
-                visual = Instantiate(help.green_visual_enemy);
-                break; 
-            case Height.High:
-
-                visual = Instantiate(help.blue_visual_enemy);
-                break; 
-        }
-        visual.transform.parent = gameObject.transform;
-        visual.transform.localPosition = Vector3.zero; 
-        visual.transform.localRotation = Quaternion.identity;
-
-        
+        SpawnerHelp help = GameObject.Find("GameController").GetComponent<SpawnerHelp>();
 
         //if (false) // testing
         if (SPECIAL_BALOON_CHANCE < Random.value)
         {
             type = Type.Simple;
-        } else
+        }
+        else
         {
             p = Random.value;
-            if(p <= 0.5f)
+            if (p <= 0.5f)
             {
                 type = Type.Double;
                 //visual feedback Double
@@ -144,13 +126,60 @@ public class EnemyController : MonoBehaviour
                 Number2.transform.eulerAngles = new Vector3(90, 0, 0);
 
 
-            } else
+            }
+            else
             {
                 type = Type.Leaking;
                 special_auxiliar = (1 - Random.value * Random.value) * 3f + 5f;
 
+                
+
             }//add more types here
 
+        }
+
+        if (type == Type.Leaking) {
+
+            switch (height)
+            {
+                case Height.Low:
+
+                    visual = Instantiate(help.red_visual_leaking);
+                    break;
+                case Height.Medium:
+
+                    visual = Instantiate(help.green_visual_leaking);
+                    break;
+                case Height.High:
+
+                    visual = Instantiate(help.blue_visual_leaking);
+                    break;
+            }
+            visual.transform.parent = gameObject.transform;
+            visual.transform.localPosition = Vector3.zero;
+            visual.transform.eulerAngles = new Vector3(320, 0, 60);
+            visual.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            
+        } else
+        {
+            switch (height)
+            {
+                case Height.Low:
+
+                    visual = Instantiate(help.red_visual_enemy);
+                    break;
+                case Height.Medium:
+
+                    visual = Instantiate(help.green_visual_enemy);
+                    break;
+                case Height.High:
+
+                    visual = Instantiate(help.blue_visual_enemy);
+                    break;
+            }
+            visual.transform.parent = gameObject.transform;
+            visual.transform.localPosition = Vector3.zero;
+            visual.transform.localRotation = Quaternion.identity;
         }
 
         startTime = Time.time;
@@ -187,9 +216,9 @@ public class EnemyController : MonoBehaviour
         rigid_body.AddForce(2f * force_dir);
 
         // Fuerza paralela
-        if (Time.time - startTime < 6f)
+        if (Time.time - startTime < 5f)
         {
-            rigid_body.AddForce(0.5f * new Vector3(-force_dir.z, 0, force_dir.x));
+            rigid_body.AddForce(2 * new Vector3(-force_dir.z, 0, force_dir.x));
         }
         
         if (type != Type.Simple)
@@ -228,12 +257,12 @@ public class EnemyController : MonoBehaviour
             case Type.Double:
                 break;
             case Type.Leaking:
-                transform.localScale = Vector3.one * (1f + 0.5f * Mathf.Sin(Time.realtimeSinceStartup * 4f));
+                //transform.localScale = Vector3.one * (1f + 0.5f * Mathf.Sin(Time.realtimeSinceStartup * 4f));
                 special_auxiliar += -Time.deltaTime;
                 if (special_auxiliar <= 1f)
                 {
                     rigid_body.velocity *= 0.8f; 
-                    //deveriamos usal exponenciales para tener en cuenta los fps variables, pero pasando
+                    
                 }
                 
                 if (special_auxiliar <= 0f)
