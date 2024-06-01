@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b987aff68665afc45be69b91d9f40873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SPECIAL_BALOON_CHANCE: 1
+  SPECIAL_BALOON_CHANCE: 0.35
   height: 0
   type: 0
   visual: {fileID: 0}
