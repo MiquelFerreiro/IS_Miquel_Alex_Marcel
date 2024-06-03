@@ -11,14 +11,12 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         if (GameObject.Find("PluginController").GetComponent<PluginConnector>().get_is_tracking_enabled()) {
-            transform.position += new Vector3(0, 1.65f, 0);
+            transform.position += new Vector3(0, 1.55f, 0);
         }
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        else
+        {
+            transform.eulerAngles = new Vector3(0, 180, 90);
+        }
 
     }
 
