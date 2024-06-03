@@ -8,14 +8,11 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     public Quaternion q;
     public bool manual;
+
     void Start()
     {
         if (GameObject.Find("PluginController").GetComponent<PluginConnector>().get_is_tracking_enabled()) {
             transform.position += new Vector3(0, 1.55f, 0);
-        }
-        else
-        {
-            transform.eulerAngles = new Vector3(0, 180, 90);
         }
 
     }
